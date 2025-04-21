@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+}
+
+.subtle-pulse {
+  animation: whitePulse 500ms ease-in-out;
+  animation-delay: 25ms;
+  transition: color 100ms ease, text-shadow 100ms ease;
+}
+
+@keyframes whitePulse {
+  0% {
+    text-shadow: none;
+  }
+
+  10% {
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+  }
+
+  25% {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+  }
+
+  40% {
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.55);
+  }
+
+  60% {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+  }
+
+  80% {
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.15);
+  }
+
+  100% {
+    text-shadow: none;
+  }
+}
