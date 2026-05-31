@@ -1,0 +1,129 @@
+@import 'tailwindcss' source('../');
+
+@theme {
+  --color-gas-bg: #0a0a0f;
+  --color-gas-surface: #141419;
+  --color-gas-border: #1e1e28;
+  --color-gas-text: #f0f0f5;
+  --color-gas-muted: #6b6b7b;
+  --color-gas-low: #00d4aa;
+  --color-gas-avg: #f5a623;
+  --color-gas-high: #ff4757;
+  --color-gas-flame: #ff6b2b;
+}
+
+@utility grid-cols-24 {
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+}
+
+@utility font-display {
+  font-family: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+}
+
+@utility font-mono-data {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@utility font-body {
+  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: #0a0a0f;
+  }
+
+  body {
+    color: #f0f0f5;
+    background-color: #0a0a0f;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(245, 166, 35, 0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(0, 212, 170, 0.05) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Subtle vignette */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(10, 10, 15, 0.6) 100%);
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.1) 3px,
+      rgba(0, 0, 0, 0.1) 6px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+}
+
+/* Flame flicker animation */
+.flame-layer {
+  animation: flicker ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  15% { transform: scaleY(1.12) scaleX(0.92); }
+  33% { transform: scaleY(0.96) scaleX(1.06); }
+  48% { transform: scaleY(1.08) scaleX(0.96); }
+  66% { transform: scaleY(0.94) scaleX(1.04); }
+  82% { transform: scaleY(1.06) scaleX(0.98); }
+}
+
+/* Entry stagger animation */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-up-delay-1 { animation-delay: 0.1s; }
+.animate-fade-up-delay-2 { animation-delay: 0.25s; }
+.animate-fade-up-delay-3 { animation-delay: 0.4s; }
+.animate-fade-up-delay-4 { animation-delay: 0.55s; }
+
+/* Subtle breathing glow for live indicator */
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.4); }
+  50% { opacity: 1; box-shadow: 0 0 0 4px rgba(245, 166, 35, 0); }
+}
+
+.animate-breathe {
+  animation: breathe 2.5s ease-in-out infinite;
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
