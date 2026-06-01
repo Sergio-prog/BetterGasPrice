@@ -13,9 +13,11 @@ export const Route = createRootRoute({
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Ethereum Gas Tracker' },
-      { name: 'description', content: 'Track Ethereum gas prices in real-time' },
+      { name: 'description', content: 'Track Ethereum gas prices in real-time across multiple networks.' },
+      { name: 'theme-color', content: '#0a0a0f' },
     ],
     links: [
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       { rel: 'stylesheet', href: appCss },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },

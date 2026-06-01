@@ -6,9 +6,28 @@ import GasGauge from '~/components/GasGauge';
 import FlameMeter from '~/components/FlameMeter';
 import FloatingEmbers from '~/components/FloatingEmbers';
 
-export default function GasTracker() {
+interface GasTrackerProps {
+  initialChainId?: number;
+  onChainChange?: (chainId: number) => void;
+}
+
+export default function GasTracker({ initialChainId, onChainChange }: GasTrackerProps) {
   const clientChains = useChains();
-  const [currentChain, setCurrentChain] = useState(clientChains[0].id);
+
+  const [currentChain, setCurrentChain] = useState<number>(() => {
+    // Prop (from URL query param) > localStorage > first chain
+    if (initialChainId) return initialChainId;
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('bettergas-network');
+        if (saved) {
+          const parsed = parseInt(saved, 10);
+          if (clientChains.some((c) => c.id === parsed)) return parsed;
+        }
+      } catch {}
+    }
+    return clientChains[0].id;
+  });
   const client = usePublicClient({ chainId: currentChain });
 
   interface GasState {
@@ -96,8 +115,13 @@ export default function GasTracker() {
   }, [client]);
 
   const onChainSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCurrentChain(parseInt(e.target.value));
+    const chainId = parseInt(e.target.value);
+    setCurrentChain(chainId);
     setLoading(true);
+    try {
+      localStorage.setItem('bettergas-network', String(chainId));
+    } catch {}
+    onChainChange?.(chainId);
   };
 
   if (error) {
